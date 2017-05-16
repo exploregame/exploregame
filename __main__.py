@@ -1,4 +1,5 @@
 from enum import Enum
+from helpbrowser import open_help_document
 import noise
 import pygame
 import random
@@ -161,8 +162,8 @@ def main(args={}):
 
     # Item class
     class Item:
-        id = "undefined"
-        name = "undefined"
+        id = 'undefined'
+        name = 'undefined'
         stats = ItemStats(0, 0, 0, 0, 0, 0, 0)
         effects = []
         wearable = False
@@ -216,7 +217,7 @@ def main(args={}):
                         self.y += dy
                         self.x += dx
             except Exception as ex:
-                console.warn("AnimalAI had a error: " + str(ex))
+                console.warn('AnimalAI had a error: ' + str(ex))
 
     # Fast Animal Entity class
     class FastAnimalEntity(Entity):
@@ -231,7 +232,7 @@ def main(args={}):
                         self.y += dy
                         self.x += dx
             except Exception as ex:
-                console.warn("AnimalAI had a error: " + str(ex))
+                console.warn('AnimalAI had a error: ' + str(ex))
 
     # Tile class
     class Tile:
@@ -271,7 +272,7 @@ def main(args={}):
     # Select inventory item function
     def select_inventory_item(args):
         item = args['item']
-        console.info("Selected inventory item {0}".format(item))
+        console.info('Selected inventory item {0}'.format(item))
         player.selected_item = item
 
     # Menu Item class
@@ -356,21 +357,21 @@ def main(args={}):
                 self.items[self.selectedItem].action(self.items[self.selectedItem].args)
                 self.close()
 
-    """Begin Items"""
+    '''Begin Items'''
 
     class ItemSword(Item):
-        id = "sword"
-        name = "Sword"
+        id = 'sword'
+        name = 'Sword'
         stats = ItemStats(attack=5)
         price = 5
 
     class ItemHammer(Item):
-        id = "hammer"
-        name = "Hammer"
+        id = 'hammer'
+        name = 'Hammer'
         stats = ItemStats(attack=3, dexterity=2)
         price = 5
 
-    """End items"""
+    '''End items'''
 
     # Add items to classes
     items = [
@@ -381,8 +382,8 @@ def main(args={}):
 
     # Entity config
     entity_types = {
-        "animal": AnimalEntity,
-        "fast_animal": FastAnimalEntity
+        'animal': AnimalEntity,
+        'fast_animal': FastAnimalEntity
     }
 
     # Read json file function
@@ -408,8 +409,12 @@ def main(args={}):
     def get_inventory_menuitems():
         o = []
         for i in player.inventory:
-            o.append(MenuItem(text=i.name, action=select_inventory_item, args={"item": i}))
+            o.append(MenuItem(text=i.name, action=select_inventory_item, args={'item': i}))
         return o
+
+    # Open help document function
+    def open_help(args):
+        open_help_document(page=args['page'], title=args['title'] if args['title'] else 'Hep[ Browser')
 
     # Load config file
     config = read_json_file('config.json')
@@ -517,12 +522,12 @@ def main(args={}):
     # Create menus
     menus.append(
         Menu(
-            name="game",
-            title="Game",
+            name='game',
+            title='Game',
             items=[
-                MenuItem("Quit", quit_game),
-                MenuItem("Restart", main),
-                MenuItem("About", main)
+                MenuItem('Quit', quit_game),
+                MenuItem('Restart', main),
+                MenuItem('About', open_help, {'page': 'about', 'title': 'About ExploreGame'})
             ],
             x=10,
             y=10,
@@ -532,8 +537,8 @@ def main(args={}):
 
     menus.append(
         Menu(
-            name="inventory",
-            title="Inventory",
+            name='inventory',
+            title='Inventory',
             items=get_inventory_menuitems(),
             x=10,
             y=10,
@@ -545,7 +550,7 @@ def main(args={}):
     for item in items:
         item.icon = ss.get_image(config['items'][item.id]['icon']['x'], config['items'][item.id]['icon']['y'])
     item_icon = Item.icon
-    console.info("Loaded icons for items")
+    console.info('Loaded icons for items')
 
     # Main loop
     while True:
@@ -641,7 +646,7 @@ def main(args={}):
         pygame.display.flip()
 
 # Print message saying that the game is starting
-print("[INFO] Starting game")
+print('[INFO] Starting game')
 
 # Start the game
 main()
