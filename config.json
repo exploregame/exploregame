@@ -1,0 +1,139 @@
+{
+  "game": {
+    "version": "0.0.3"
+  },
+  "player": {
+    "image": {
+      "x": 5,
+      "y": 2
+    }
+  },
+  "screen": {
+    "height": 512,
+    "width": 512,
+    "title": "ExploreGame ",
+    "include_version_in_title": true
+  },
+  "items": {
+    "undefined": {
+      "icon": {
+        "x": 21,
+        "y": 0
+      }
+    },
+    "sword": {
+      "icon": {
+        "x": 63,
+        "y": 28
+      }
+    },
+    "hammer": {
+      "icon": {
+        "x": 14,
+        "y": 26
+      }
+    }
+  },
+  "menu": {
+    "margin_left": 16,
+    "margin_right": 16,
+    "margin_top": 4,
+    "margin_bottom": 4,
+    "colors": {
+      "selected": [255, 255, 255],
+      "default": [0, 0, 0],
+      "title": [64, 64, 64],
+      "background": [64, 64, 255]
+    },
+    "pointer": {
+      "tilex": 8,
+      "tiley": 6
+    }
+  },
+  "world": {
+    "height": 32,
+    "width": 32,
+    "generator": {
+      "freq": 16,
+      "octaves": 1
+    }
+  },
+  "mobs": [
+    {
+      "name": "pig",
+      "title": "Pig",
+      "health": 10,
+      "tilex": 3,
+      "tiley": 4,
+      "type": "animal",
+      "tangible": true,
+      "spawn": {
+        "grass": 1,
+        "dirt": 1
+      },
+      "drops": [
+        {
+          "name": "pork",
+          "quantity": 1,
+          "chance": 100
+        },
+        {
+          "name": "pork",
+          "quantity": 2,
+          "chance": 50
+        },
+        {
+          "name": "pork",
+          "quantity": 3,
+          "chance": 20
+        },
+        {
+          "name": "pork",
+          "quantity": 4,
+          "chance": 10
+        }
+      ]
+    }
+  ],
+  "terrain": [
+    {"name": "deep_water", "min": 0, "max": 50, "x": 28, "y": 19, "tangible": true},
+    {"name": "water", "min": 51, "max": 100, "x": 37, "y": 19, "tangible": true},
+    {"name": "sand", "min": 101, "max": 125, "x": 14, "y": 13, "tangible": false},
+    {"name": "dirt", "min": 126, "max": 150, "x": 60, "y": 12, "tangible": false},
+    {"name": "grass", "min": 151, "max": 250, "x": 1, "y": 15, "tangible": false}
+  ],
+  "fonts": [
+    {
+      "name": "default",
+      "file": "visitor1.ttf",
+      "size": "20",
+      "default": true
+    }
+  ],
+  "tilesets": [
+    {
+      "name": "default",
+      "file": "default.png",
+      "tile_width": 32,
+      "tile_height": 32,
+      "default": true
+    }
+  ],
+  "indicators": {
+    "background": [64, 64, 255],
+    "image": {
+      "padding_top": 4,
+      "padding_left": 4
+    },
+    "title": {
+      "padding_top": 4,
+      "padding_left": 4,
+      "color": [255, 255, 255]
+    },
+    "hp": {
+      "padding_top": 2,
+      "padding_left": 4,
+      "color": [255, 255, 255]
+    }
+  }
+}

@@ -1,0 +1,12 @@
+
+[2017-05-15 19:30:26] Traceback (most recent call last):
+  File "/home/carver/PycharmProjects/ExploreGame/helpbrowser.py", line 363, in <module>
+    main()
+  File "/home/carver/PycharmProjects/ExploreGame/helpbrowser.py", line 50, in main
+    app = CefApplication(sys.argv)
+  File "/home/carver/PycharmProjects/ExploreGame/helpbrowser.py", line 221, in __init__
+    self.setupIcon()
+  File "/home/carver/PycharmProjects/ExploreGame/helpbrowser.py", line 239, in setupIcon
+    "resources", "{0}.png".format(sys.argv[1]))
+IndexError: list index out of range
+
