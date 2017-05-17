@@ -35,6 +35,8 @@
 * Changed grass texture
 * Changed `indicators.color` to `indicators.background` in `config.json`
 * Changed `targetSurface` to `target_surface` in `__main__.py`
+* Changed `defaultFont` to `default_font` in `__main__.py`
+* Changed `defaultTileset` to `default_tileset` in `__main__.py`
 * Moved menu background color into config file
 * Switched from `noise` to `opensimplex`
 * Added seeds

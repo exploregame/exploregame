@@ -22,8 +22,8 @@ def main(args={}):
     # Variables
     fonts = {}
     tilesets = {}
-    defaultFont = None
-    defaultTileset = None
+    default_font = None
+    default_tileset = None
     world = []
     worldTiles = []
     cameraFollowsPlayer = True
@@ -260,7 +260,7 @@ def main(args={}):
 
             # Set X and Y of title
             hpX = config['indicators']['image']['padding_left'] + 32 + config['indicators']['hp']['padding_left']
-            hpY = config['indicators']['hp']['padding_top'] + config['indicators']['title']['padding_top'] + defaultFont.size(self.entity.name)[1]
+            hpY = config['indicators']['hp']['padding_top'] + config['indicators']['title']['padding_top'] + default_font.size(self.entity.name)[1]
 
             # Fill screen with color
             self.surface.fill(config['indicators']['background'])
@@ -305,9 +305,9 @@ def main(args={}):
 
             self.surface = pygame.Surface(
                 (
-                    defaultFont.size(max(s, key=len))[0] + config['menu']['margin_left'] + config['menu'][
+                    default_font.size(max(s, key=len))[0] + config['menu']['margin_left'] + config['menu'][
                         'margin_right'],
-                    defaultFont.size(max(s, key=len))[1] * (len(items) + 1)
+                    default_font.size(max(s, key=len))[1] * (len(items) + 1)
                 )
             )
 
@@ -344,7 +344,7 @@ def main(args={}):
                          if self.selectedItem == self.items.index(i)
                          else config['menu']['colors']['default']).draw(
                             surface=self.surface,
-                            y=defaultFont.get_height() * (self.items.index(i) + 1) + config['menu']['margin_top'],
+                            y=default_font.get_height() * (self.items.index(i) + 1) + config['menu']['margin_top'],
                             x=config['menu']['margin_left'])
                 target_surface.blit(self.surface, (self.x, self.y))
 
@@ -440,7 +440,7 @@ def main(args={}):
         ff = pygame.font.Font('assets/fonts/{0}'.format(i['file']), int(i['size']))
         fonts[i['name']] = ff
         if i['default']:
-            defaultFont = ff
+            default_font = ff
     console.info('Loaded fonts')
 
     # Load tilesets
@@ -448,7 +448,7 @@ def main(args={}):
         ss = SpriteSheet('assets/tilesets/{0}'.format(i['file']), i['tile_width'], i['tile_height'])
         tilesets[i['name']] = ss
         if i['default']:
-            defaultTileset = ss
+            default_tileset = ss
     console.info('Loaded tilesets')
 
     # Create text
@@ -479,7 +479,7 @@ def main(args={}):
             for t in config['terrain']:
                 if t['min'] <= abs(v) <= t['max']:
                     f = True
-                    img = defaultTileset.get_image(t['x'], t['y'])
+                    img = default_tileset.get_image(t['x'], t['y'])
                     row.append(Tile(name=t['name'], x=x, y=y, tangible=t['tangible'], image=img))
             if not f:
                 console.warn('Could not find texture for tile at ({0}, {1})'.format(x, y))
@@ -491,7 +491,7 @@ def main(args={}):
             for mob in config['mobs']:
                 if worldTiles[y][x].name in mob['spawn']:
                     if random.randint(0, 100 - mob['spawn'][worldTiles[y][x].name]) == 1:
-                        worldEntities.append(entity_types[mob['type']](name=mob['name'], x=x, y=y, health=mob['health'], tangible=mob['tangible'], image=defaultTileset.get_image(mob['tilex'], mob['tiley'])))
+                        worldEntities.append(entity_types[mob['type']](name=mob['name'], x=x, y=y, health=mob['health'], tangible=mob['tangible'], image=default_tileset.get_image(mob['tilex'], mob['tiley'])))
     console.info('Spawned mobs')
 
     for y in range(config['world']['height']):

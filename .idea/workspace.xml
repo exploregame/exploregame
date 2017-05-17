@@ -21,8 +21,8 @@
       <file leaf-file-name="__main__.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/__main__.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="53">
-              <caret line="332" column="37" lean-forward="false" selection-start-line="332" selection-start-column="37" selection-end-line="332" selection-end-column="37" />
+            <state relative-caret-position="903">
+              <caret line="493" column="168" lean-forward="false" selection-start-line="493" selection-start-column="168" selection-end-line="493" selection-end-column="168" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
@@ -50,8 +50,8 @@
       <file leaf-file-name="CHANGELOG.md" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/CHANGELOG.md">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="332">
-              <caret line="31" column="4" lean-forward="false" selection-start-line="31" selection-start-column="4" selection-end-line="31" selection-end-column="4" />
+            <state relative-caret-position="451">
+              <caret line="38" column="46" lean-forward="false" selection-start-line="38" selection-start-column="46" selection-end-line="38" selection-end-column="46" />
               <folding />
             </state>
           </provider>
@@ -111,7 +111,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>entity(</find>
       <find>health</find>
       <find>tile['tangible']</find>
       <find>(0,</find>
@@ -141,6 +140,7 @@
       <find>&quot;</find>
       <find>config['world']['structures'][structure]</find>
       <find>targetSurface</find>
+      <find>defaultTileset</find>
     </findStrings>
     <replaceStrings>
       <replace>tile.tangible</replace>
@@ -148,6 +148,7 @@
       <replace>'</replace>
       <replace>structure</replace>
       <replace>target_surface</replace>
+      <replace>default_tileset</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -633,8 +634,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/__main__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="53">
-          <caret line="332" column="37" lean-forward="false" selection-start-line="332" selection-start-column="37" selection-end-line="332" selection-end-column="37" />
+        <state relative-caret-position="903">
+          <caret line="493" column="168" lean-forward="false" selection-start-line="493" selection-start-column="168" selection-end-line="493" selection-end-column="168" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>
@@ -643,8 +644,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/CHANGELOG.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="332">
-          <caret line="31" column="4" lean-forward="false" selection-start-line="31" selection-start-column="4" selection-end-line="31" selection-end-column="4" />
+        <state relative-caret-position="451">
+          <caret line="38" column="46" lean-forward="false" selection-start-line="38" selection-start-column="46" selection-end-line="38" selection-end-column="46" />
           <folding />
         </state>
       </provider>
