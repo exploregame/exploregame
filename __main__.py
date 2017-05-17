@@ -1,11 +1,12 @@
 from enum import Enum
 from helpbrowser import open_help_document
-import noise
+from opensimplex import OpenSimplex
 import pygame
 import random
 import json
 import os
 import time
+import uuid
 
 global menu_open
 global item_icon
@@ -32,6 +33,9 @@ def main(args={}):
     menus = []
     menu_open = None
     item_icon = None
+
+    # TODO: Add keymap for config
+    keymap = {}
 
     # SpriteSheet class
     class SpriteSheet(object):
@@ -451,13 +455,17 @@ def main(args={}):
     infoTextObject = Text('Version {0}'.format(config['game']['version']), x=0, y=0)
     console.info('Created text objects')
 
+    # Setup OpenSimplex
+    seed = uuid.uuid1().int >> 64
+    gen = OpenSimplex(seed=seed)
+    console.info('Using {0} as the seed'.format(seed))
+
     # Generate world
     for y in range(config['world']['height']):
         row = []
         for x in range(config['world']['width']):
-            v = int(noise.pnoise2(x / (config['world']['generator']['freq'] * config['world']['generator']['octaves']),
-                                         y / (config['world']['generator']['freq'] * config['world']['generator']['octaves']),
-                                         config['world']['generator']['octaves']) * 127.0 + 128.0)
+            v = int(gen.noise2d(x / (config['world']['generator']['freq'] * config['world']['generator']['octaves']),
+                                         y / (config['world']['generator']['freq'] * config['world']['generator']['octaves'])) * 127.0 + 128.0)
             row.append(v)
         world.append(row)
     console.info('Created world')
@@ -486,6 +494,20 @@ def main(args={}):
                         worldEntities.append(entity_types[mob['type']](name=mob['name'], x=x, y=y, health=mob['health'], tangible=mob['tangible'], image=defaultTileset.get_image(mob['tilex'], mob['tiley'])))
     console.info('Spawned mobs')
 
+    for y in range(config['world']['height']):
+        for x in range(config['world']['width']):
+            for structure in config['world']['structures']:
+                if random.randint(1, structure['random']['range'] - structure['random']['chance']) == 1:
+                    if worldTiles[y][x].name in structure['allowed_tiles']:
+                        worldTiles[y][x] = Tile(
+                            name=structure['tile']['name'],
+                            x=x,
+                            y=y,
+                            tangible=structure['tile']['tangible'],
+                            image=ss.get_image(structure['tile']['image']['x'],
+                                               structure['tile']['image']['y']
+                            )
+                        )
     # Generate start position
     px = random.randint(0, config['world']['width']-1)
     py = random.randint(0, config['world']['height']-1)
@@ -563,8 +585,8 @@ def main(args={}):
 
         # Draw world
         worldSurface = pygame.Surface((config['world']['width']*32, config['world']['height']*32))
-        for y in range(config['world']['height']):
-            for x in range(config['world']['width']):
+        for y in range(player.yTile - int(config['screen']['height'] / 32), player.yTile + int(config['screen']['height'] / 32) if config['world']['height'] - player.yTile > int(config['screen']['height'] / 32) else config['world']['height']):
+            for x in range(player.xTile - int(config['screen']['width'] / 32), player.xTile + int(config['screen']['width'] / 32) if config['world']['width'] - player.xTile > int(config['screen']['width'] / 32) else config['world']['width']):
                 v = worldTiles[y][x]
                 worldSurface.blit(v.image, [v.x * 32, v.y * 32])
 

@@ -29,7 +29,13 @@
 * Changed color of menu title
 * Changed color of menu background
 * Changed color of entity indicators
-* Moved menu background color into config file
 * Changed menu margins
 * Changed *health indicators* to *entity indicators* in last versions changelog
 * Changed `indicators.color` to `indicators.background` in config file
+* Changed the rendering system so it only renders things the player can see
+* Changed grass texture
+* Moved menu background color into config file
+* Switched from `noise` to `opensimplex`
+* Added seeds
+* Added the Help Browser
+* Added stairwells
