@@ -31,11 +31,12 @@
 * Changed color of entity indicators
 * Changed menu margins
 * Changed *health indicators* to *entity indicators* in last versions changelog
-* Changed `indicators.color` to `indicators.background` in config file
 * Changed the rendering system so it only renders things the player can see
 * Changed grass texture
+* Changed `indicators.color` to `indicators.background` in `config.json`
+* Changed `targetSurface` to `target_surface` in `__main__.py`
 * Moved menu background color into config file
 * Switched from `noise` to `opensimplex`
 * Added seeds
 * Added the Help Browser
-* Added stairwells
+* Added stairwells`

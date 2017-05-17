@@ -330,7 +330,7 @@ def main(args={}):
             else:
                 menu_open = None
 
-        def draw(self, targetSurface):
+        def draw(self, target_surface):
             if self.isOpen:
                 self.surface.fill(config['menu']['colors']['background'])
 
@@ -346,7 +346,7 @@ def main(args={}):
                             surface=self.surface,
                             y=defaultFont.get_height() * (self.items.index(i) + 1) + config['menu']['margin_top'],
                             x=config['menu']['margin_left'])
-                targetSurface.blit(self.surface, (self.x, self.y))
+                target_surface.blit(self.surface, (self.x, self.y))
 
         def handle_key(self, key):
             if key == pygame.K_UP:
