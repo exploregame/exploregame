@@ -378,13 +378,11 @@ class StairwellTileStructure(Tile):
     stairwell_direction = None
 
     def setup(self):
-        if self.z != world_depth - 1:
-            self.stairwell_direction = random.randint(0, 1)
-            d = 1 if self.stairwell_direction == 1 else -1
-            osw = StairwellTileStructure(z=self.z + d, y=self.y, x=self.x, name='stairwell', tangible=self.tangible, image=self.image)
-            osw.stairwell_direction = not self.stairwell_direction
-            worldTiles[self.z + d][self.y][self.x] = osw
-            print (worldTiles[self.z - 1][self.y][self.x])
+        self.stairwell_direction = random.randint(0, 1) if self.z != world_depth - 1 else 0
+        d = 1 if self.stairwell_direction == 1 else -1
+        osw = StairwellTileStructure(z=self.z + d, y=self.y, x=self.x, name='stairwell', tangible=self.tangible, image=self.image)
+        osw.stairwell_direction = not self.stairwell_direction
+        worldTiles[self.z + d][self.y][self.x] = osw
 # Add items to classes
 items = [
     Item,
@@ -493,7 +491,7 @@ for z in range(world_depth):
             v = int(gen.noise3d(
                 x=x / (config['world']['generator']['freq'] * config['world']['generator']['octaves']),
                 y=y / (config['world']['generator']['freq'] * config['world']['generator']['octaves']),
-                z=z / (config['world']['generator']['freq'] * config['world']['generator']['octaves']) * config['world']['generator']['z-multiplier']) * 127.0 + 128.0)
+                z=z / (config['world']['generator']['freq'] * config['world']['generator']['octaves'])) * 127.0 + 128.0)
             row.append(v)
         zrow.append(row)
     world.append(zrow)
@@ -545,8 +543,8 @@ for z in range(world_depth):
                                                    tile_structure['tile']['image']['y']
                                 ),
                             )
-
                             tile_structure_object.setup()
+
                             worldTiles[z][y][x] = tile_structure_object
 # Generate start position
 px = random.randint(0, world_width-1)
@@ -682,6 +680,7 @@ while True:
 
                 if worldTiles[player.z][player.y][player.x].name == 'stairwell':
                     if worldTiles[player.z][player.y][player.x].stairwell_direction:
+                        # BUG: Crashes when going to over max, can't solve in generator
                         player.z += 1
                     else:
                         player.z -= 1
