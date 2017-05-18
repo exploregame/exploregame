@@ -5,7 +5,7 @@
       "random": {
         "type": "randint",
         "chance": 1,
-        "range": 500
+        "range": 200
       },
       "allowed_tiles": [
         "grass",

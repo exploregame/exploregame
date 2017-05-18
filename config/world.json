@@ -2,9 +2,11 @@
   "world": {
     "height": 64,
     "width": 64,
+    "depth": 8,
     "generator": {
       "freq": 16,
-      "octaves": 1
+      "octaves": 1,
+      "z-multiplier": 10
     }
   }
 }

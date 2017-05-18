@@ -42,4 +42,8 @@
 * Switched from `noise` to `opensimplex`
 * Added seeds
 * Added the Help Browser
-* Added stairwells`
+* Added stairwells
+* Added dungeons
+* Changed from 2D maps to 3D maps
+* Fixes to do with the 2D to 3D transition
+* Changed version system for pre-releases from `X.X.X.alpha-X` to `X.X.X-alpha.X`
