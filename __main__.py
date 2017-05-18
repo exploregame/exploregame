@@ -648,7 +648,7 @@ while True:
 
         tmpos = [screen_width/2+player.x*-32, screen_height/2+player.y*-32]
         screen.blit(worldSurface, tmpos)
-
+        
         # Find entity in front of player
         target_entity = None
         target_entity_indicator = None
