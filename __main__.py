@@ -1,3 +1,5 @@
+#! /usr/bin/env python3
+
 from enum import Enum
 from helpbrowser import open_help_document
 from opensimplex import OpenSimplex
@@ -611,6 +613,13 @@ for item in items:
 item_icon = Item.icon
 console.info('Loaded icons for items')
 
+# FIX: Stairwell Bug
+for y in worldTiles[world_depth - 1]:
+    for x in y:
+        if x.name == 'stairwell':
+            print (x.x, x.y, x.z)
+            x.stairwell_direction = 0
+
 # Main loop
 while True:
 
@@ -679,10 +688,10 @@ while True:
                         player.selected_item.on_attack(self=player.selected_item, target=target_entity)
 
                 if worldTiles[player.z][player.y][player.x].name == 'stairwell':
-                    if worldTiles[player.z][player.y][player.x].stairwell_direction:
+                    if worldTiles[player.z][player.y][player.x].stairwell_direction == 1:
                         # BUG: Crashes when going to over max, can't solve in generator
                         player.z += 1
-                    else:
+                    elif worldTiles[player.z][player.y][player.x].stairwell_direction == 0:
                         player.z -= 1
                 for menu in menus:
                     if event.key == menu.toggle_key:
@@ -692,6 +701,9 @@ while True:
                     for v in worldEntities:
                         v.do_turn()
 
+    if player.z >= world_depth:
+        player.z -= 1
+        
     # Draw objects
     if target_entity_indicator:
         target_entity_indicator.draw()
@@ -708,4 +720,3 @@ while True:
 
     # Flip the display
     pygame.display.flip()
-
