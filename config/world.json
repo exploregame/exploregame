@@ -1,0 +1,10 @@
+{
+  "world": {
+    "height": 64,
+    "width": 64,
+    "generator": {
+      "freq": 16,
+      "octaves": 1
+    }
+  }
+}

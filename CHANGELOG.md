@@ -26,6 +26,7 @@
 ### 0.0.4
 * Added new Animal AI that makes them slower
 * Moved old Animal Entity class with old AI to a new class called `FastAnimalEntity`
+* Moved config into multiple different files located in the `config` directory
 * Changed color of menu title
 * Changed color of menu background
 * Changed color of entity indicators
@@ -33,7 +34,7 @@
 * Changed *health indicators* to *entity indicators* in last versions changelog
 * Changed the rendering system so it only renders things the player can see
 * Changed grass texture
-* Changed `indicators.color` to `indicators.background` in `config.json`
+* Changed `indicators.color` to `indicators.background` in `config/indicators.json`
 * Changed `targetSurface` to `target_surface` in `__main__.py`
 * Changed `defaultFont` to `default_font` in `__main__.py`
 * Changed `defaultTileset` to `default_tileset` in `__main__.py`

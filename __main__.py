@@ -8,8 +8,6 @@ import os
 import time
 import uuid
 
-global menu_open
-global item_icon
 
 def main(args={}):
     # Globals
@@ -75,7 +73,6 @@ def main(args={}):
             self.y = y
             self.sx = sx
             self.sy = sy
-
 
     # Console class
     class Console:
@@ -420,12 +417,15 @@ def main(args={}):
     def open_help(args):
         open_help_document(page=args['page'], title=args['title'] if args['title'] else 'Hep[ Browser')
 
-    # Load config file
-    config = read_json_file('config.json')
-
     # Create console
     console = Console()
     console.info('Created console')
+
+    # Load config file
+    config = {}
+    for config_file in os.listdir('config'):
+        config.update(read_json_file('config/{0}'.format(config_file)))
+        console.info('Loaded config file: {0}'.format(config_file))
 
     # Create screen
     pygame.display.set_caption(config['screen']['title'] + config['game']['version'] if config['screen']['include_version_in_title'] else config['screen']['title'])
@@ -496,18 +496,19 @@ def main(args={}):
 
     for y in range(config['world']['height']):
         for x in range(config['world']['width']):
-            for structure in config['world']['structures']:
-                if random.randint(1, structure['random']['range'] - structure['random']['chance']) == 1:
-                    if worldTiles[y][x].name in structure['allowed_tiles']:
-                        worldTiles[y][x] = Tile(
-                            name=structure['tile']['name'],
-                            x=x,
-                            y=y,
-                            tangible=structure['tile']['tangible'],
-                            image=ss.get_image(structure['tile']['image']['x'],
-                                               structure['tile']['image']['y']
+            for tile_structure in config['tile_structures']:
+                if tile_structure['random']['type'] == 'randint':
+                    if random.randint(1, tile_structure['random']['range'] - tile_structure['random']['chance']) == 1:
+                        if worldTiles[y][x].name in tile_structure['allowed_tiles']:
+                            worldTiles[y][x] = Tile(
+                                name=tile_structure['tile']['name'],
+                                x=x,
+                                y=y,
+                                tangible=tile_structure['tile']['tangible'],
+                                image=ss.get_image(tile_structure['tile']['image']['x'],
+                                                   tile_structure['tile']['image']['y']
+                                )
                             )
-                        )
     # Generate start position
     px = random.randint(0, config['world']['width']-1)
     py = random.randint(0, config['world']['height']-1)

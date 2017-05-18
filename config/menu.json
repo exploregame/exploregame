@@ -1,0 +1,18 @@
+{
+  "menu": {
+    "margin_left": 16,
+    "margin_right": 16,
+    "margin_top": 4,
+    "margin_bottom": 4,
+    "colors": {
+      "selected": [255, 255, 255],
+      "default": [0, 0, 0],
+      "title": [64, 64, 64],
+      "background": [64, 64, 255]
+    },
+    "pointer": {
+      "tilex": 8,
+      "tiley": 6
+    }
+  }
+}

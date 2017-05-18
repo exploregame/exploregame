@@ -1,0 +1,25 @@
+{
+  "tile_structures": [
+    {
+      "name": "stairwell",
+      "random": {
+        "type": "randint",
+        "chance": 1,
+        "range": 500
+      },
+      "allowed_tiles": [
+        "grass",
+        "dirt",
+        "sand"
+      ],
+      "tile": {
+        "name": "stairwell",
+        "tangible": false,
+        "image": {
+          "x": 56,
+          "y": 44
+        }
+      }
+    }
+  ]
+}

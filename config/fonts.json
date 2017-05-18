@@ -1,0 +1,10 @@
+{
+  "fonts": [
+    {
+      "name": "default",
+      "file": "visitor1.ttf",
+      "size": "20",
+      "default": true
+    }
+  ]
+}

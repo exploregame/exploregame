@@ -1,0 +1,8 @@
+{
+  "screen": {
+    "height": 512,
+    "width": 512,
+    "title": "ExploreGame ",
+    "include_version_in_title": true
+  }
+}

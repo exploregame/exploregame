@@ -1,0 +1,39 @@
+{
+  "mobs": [
+    {
+      "name": "pig",
+      "title": "Pig",
+      "health": 10,
+      "tilex": 3,
+      "tiley": 4,
+      "type": "animal",
+      "tangible": true,
+      "spawn": {
+        "grass": 1,
+        "dirt": 1
+      },
+      "drops": [
+        {
+          "name": "pork",
+          "quantity": 1,
+          "chance": 100
+        },
+        {
+          "name": "pork",
+          "quantity": 2,
+          "chance": 50
+        },
+        {
+          "name": "pork",
+          "quantity": 3,
+          "chance": 20
+        },
+        {
+          "name": "pork",
+          "quantity": 4,
+          "chance": 10
+        }
+      ]
+    }
+  ]
+}
