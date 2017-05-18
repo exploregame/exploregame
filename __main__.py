@@ -1,5 +1,6 @@
 #! /usr/bin/env python3
 
+# Imports
 from enum import Enum
 from helpbrowser import open_help_document
 from opensimplex import OpenSimplex
@@ -9,7 +10,7 @@ import json
 import os
 import time
 import uuid
-
+import traceback
 
 # Globals
 global menu_open
@@ -198,7 +199,7 @@ class Player:
         self.selected_item = selected_item
 
     def draw(self):
-        screen.blit(self.image, (config['screen']['height'] / 2, config['screen']['width'] / 2))
+        screen.blit(self.image, (screen_height / 2, screen_width / 2))
 
 # Animal Entity class
 class AnimalEntity(Entity):
@@ -269,7 +270,7 @@ class EntityInfoIndicator:
         Text(text='HP: {0}'.format(self.entity.health)).draw(self.surface, x=hpX, y=hpY)
 
         # Draw to screen
-        screen.blit(self.surface, (config['screen']['height'] - 128, 0))
+        screen.blit(self.surface, (screen_height - 128, 0))
 
 # Select inventory item function
 def select_inventory_item(args):
@@ -385,6 +386,7 @@ class StairwellTileStructure(Tile):
         osw = StairwellTileStructure(z=self.z + d, y=self.y, x=self.x, name='stairwell', tangible=self.tangible, image=self.image)
         osw.stairwell_direction = not self.stairwell_direction
         worldTiles[self.z + d][self.y][self.x] = osw
+        
 # Add items to classes
 items = [
     Item,
@@ -450,10 +452,12 @@ for config_file in os.listdir('config'):
 world_height = config['world']['height']
 world_width = config['world']['width']
 world_depth = config['world']['depth']
+screen_height = config['screen']['width']
+screen_width = config['screen']['width']
 
 # Create screen
 pygame.display.set_caption(config['screen']['title'] + config['game']['version'] if config['screen']['include_version_in_title'] else config['screen']['title'])
-screen = pygame.display.set_mode([config['screen']['width'], config['screen']['height']])
+screen = pygame.display.set_mode([screen_width, screen_height])
 console.info('Created screen')
 
 # Create camera
@@ -509,11 +513,12 @@ for z in range(world_depth):
             f = False
             for t in config['terrain']:
                 if t['min'] <= abs(v) <= t['max']:
-                    f = True
-                    img = default_tileset.get_image(t['x'], t['y'])
-                    row.append(Tile(name=t['name'], x=x, y=y, z=z, tangible=t['tangible'], image=img))
+                    if t['minz'] <= z <= t['maxz']:
+                        f = True
+                        img = default_tileset.get_image(t['x'], t['y'])
+                        row.append(Tile(name=t['name'], x=x, y=y, z=z, tangible=t['tangible'], image=img))
             if not f:
-                console.warn('Could not find texture for tile at ({0}, {1})'.format(x, y))
+                console.warn('Could not find texture for tile at ({0}, {1}, {2})'.format(x, y, z))
         zrow.append(row)
     worldTiles.append(zrow)
 
@@ -546,7 +551,6 @@ for z in range(world_depth):
                                 ),
                             )
                             tile_structure_object.setup()
-
                             worldTiles[z][y][x] = tile_structure_object
 # Generate start position
 px = random.randint(0, world_width-1)
@@ -617,106 +621,117 @@ console.info('Loaded icons for items')
 for y in worldTiles[world_depth - 1]:
     for x in y:
         if x.name == 'stairwell':
-            print (x.x, x.y, x.z)
             x.stairwell_direction = 0
 
 # Main loop
 while True:
+    try:
+        # Update info text
+        infoTextObject.set_text('{0} ({1}, {2}, {3}) {4}'.format(config['game']['version'], player.x, player.y, player.z, worldTiles[player.z][player.y][player.x].name))
 
-    # Update info text
-    infoTextObject.set_text('{0} ({1}, {2}, {3}) {4}'.format(config['game']['version'], player.x, player.y, player.z, worldTiles[player.z][player.y][player.x].name))
+        # Clear screen
+        screen.fill((0, 0, 0))
 
-    # Clear screen
-    screen.fill((0, 0, 0))
-
-    # Draw world
-    worldSurface = pygame.Surface((world_width*32, world_height*32))
-    for y in range(player.y - int(config['screen']['height'] / 32), player.y + int(config['screen']['height'] / 32) if world_height - player.y > int(config['screen']['height'] / 32) else world_height):
-        for x in range(player.x - int(config['screen']['width'] / 32), player.x + int(config['screen']['width'] / 32) if world_width - player.x > int(config['screen']['width'] / 32) else world_width):
-            v = worldTiles[player.z][y][x]
-            worldSurface.blit(v.image, [v.x * 32, v.y * 32])
-
-    for v in worldEntities:
-        if v.health <= 0:
-            worldEntities.remove(v)
-        else:
-            if player.z == v.z:
+        # Draw world
+        worldSurface = pygame.Surface((world_width*32, world_height*32))
+        for y in range(player.y - int(screen_height / 32), player.y + int(screen_height / 32) if world_height - player.y > int(screen_height / 32) else world_height):
+            for x in range(player.x - int(screen_width / 32), player.x + int(screen_width / 32) if world_width - player.x > int(screen_width / 32) else world_width):
+                v = worldTiles[player.z][y][x]
                 worldSurface.blit(v.image, [v.x * 32, v.y * 32])
 
-    tmpos = [config['screen']['width']/2+player.x*-32, config['screen']['height']/2+player.y*-32]
-    screen.blit(worldSurface, tmpos)
-
-    # Find entity in front of player
-    target_entity = None
-    target_entity_indicator = None
-    for mob in worldEntities:
-        if mob.z == player.z and mob.y == player.y - 1 and mob.x == player.x:
-            target_entity = mob
-            target_entity_indicator = EntityInfoIndicator(target_entity)
-
-    # Handle events
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:  # event is quit
-            exit()
-        elif event.type == pygame.KEYDOWN:
-            if menu_open:
-                if event.key == menu_open.toggle_key:
-                    menu_open.close()
-                else:
-                    menu_open.handle_key(event.key)
+        for v in worldEntities:
+            if v.health <= 0:
+                worldEntities.remove(v)
             else:
-                if event.key == pygame.K_ESCAPE:  # event is escape key
-                    quit_game()
-                elif event.key == pygame.K_UP:
-                    tile = worldTiles[int(player.z)][int(player.y) - 1][int(player.x)]
-                    if not tile.tangible and not check_entity_collision(player.x, player.y - 1, player.z):
-                        player.y -= 1
-                elif event.key == pygame.K_DOWN:
-                    tile = worldTiles[int(player.z)][int(player.y) + 1][int(player.x)]
-                    if not tile.tangible and not check_entity_collision(player.x, player.y + 1, player.z):
-                        player.y += 1
-                elif event.key == pygame.K_LEFT:
-                    tile = worldTiles[int(player.z)][int(player.y)][int(player.x) - 1]
-                    if not tile.tangible and not check_entity_collision(player.x - 1, player.y, player.z):
-                        player.x -= 1
-                elif event.key == pygame.K_RIGHT:
-                    tile = worldTiles[int(player.z)][int(player.y)][int(player.x) + 1]
-                    if not tile.tangible and not check_entity_collision(player.x + 1, player.y, player.z):
-                        player.x += 1
-                elif event.key == pygame.K_a:
-                    if player.selected_item and target_entity:
-                        player.selected_item.on_attack(self=player.selected_item, target=target_entity)
+                if player.z == v.z:
+                    worldSurface.blit(v.image, [v.x * 32, v.y * 32])
 
-                if worldTiles[player.z][player.y][player.x].name == 'stairwell':
-                    if worldTiles[player.z][player.y][player.x].stairwell_direction == 1:
-                        # BUG: Crashes when going to over max, can't solve in generator
-                        player.z += 1
-                    elif worldTiles[player.z][player.y][player.x].stairwell_direction == 0:
+        tmpos = [screen_width/2+player.x*-32, screen_height/2+player.y*-32]
+        screen.blit(worldSurface, tmpos)
+
+        # Find entity in front of player
+        target_entity = None
+        target_entity_indicator = None
+        for mob in worldEntities:
+            if mob.z == player.z and mob.y == player.y - 1 and mob.x == player.x:
+                target_entity = mob
+                target_entity_indicator = EntityInfoIndicator(target_entity)
+
+        # Handle events
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:  # event is quit
+                exit()
+            elif event.type == pygame.KEYDOWN:
+                if menu_open:
+                    if event.key == menu_open.toggle_key:
+                        menu_open.close()
+                    else:
+                        menu_open.handle_key(event.key)
+                else:
+                    if event.key == pygame.K_ESCAPE:  # event is escape key
+                        quit_game()
+                    elif event.key == pygame.K_UP:
+                        tile = worldTiles[int(player.z)][int(player.y) - 1][int(player.x)]
+                        if not tile.tangible and not check_entity_collision(player.x, player.y - 1, player.z):
+                            player.y -= 1
+                    elif event.key == pygame.K_DOWN:
+                        tile = worldTiles[int(player.z)][int(player.y) + 1][int(player.x)]
+                        if not tile.tangible and not check_entity_collision(player.x, player.y + 1, player.z):
+                            player.y += 1
+                    elif event.key == pygame.K_LEFT:
+                        tile = worldTiles[int(player.z)][int(player.y)][int(player.x) - 1]
+                        if not tile.tangible and not check_entity_collision(player.x - 1, player.y, player.z):
+                            player.x -= 1
+                    elif event.key == pygame.K_RIGHT:
+                        tile = worldTiles[int(player.z)][int(player.y)][int(player.x) + 1]
+                        if not tile.tangible and not check_entity_collision(player.x + 1, player.y, player.z):
+                            player.x += 1
+                    elif event.key == pygame.K_a:
+                        if player.selected_item and target_entity:
+                            player.selected_item.on_attack(self=player.selected_item, target=target_entity)
+                    elif event.key == pygame.K_l:
                         player.z -= 1
-                for menu in menus:
-                    if event.key == menu.toggle_key:
-                        menu.toggle()
+                    elif event.key == pygame.K_p:
+                        player.z += 1
+                    if worldTiles[player.z][player.y][player.x].name == 'stairwell':
+                        if worldTiles[player.z][player.y][player.x].stairwell_direction == 1:
+                            # BUG: Crashes when going to over max, can't solve in generator
+                            player.z += 1
+                        elif worldTiles[player.z][player.y][player.x].stairwell_direction == 0:
+                            player.z -= 1
+                    for menu in menus:
+                        if event.key == menu.toggle_key:
+                            menu.toggle()
 
-                if menu_open == None:
-                    for v in worldEntities:
-                        v.do_turn()
+                    if menu_open == None:
+                        for v in worldEntities:
+                            v.do_turn()
 
-    if player.z >= world_depth:
-        player.z -= 1
-        
-    # Draw objects
-    if target_entity_indicator:
-        target_entity_indicator.draw()
+        if player.z >= world_depth:
+            player.z -= 1
+            
+        # Draw objects
+        if target_entity_indicator:
+            target_entity_indicator.draw()
 
-    infoTextObject.draw(screen)
-    player.draw()
+        infoTextObject.draw(screen)
+        player.draw()
 
-    if player.selected_item:
-        screen.blit(player.selected_item.icon, [0, config['screen']['height'] - 32])
+        if player.selected_item:
+            screen.blit(player.selected_item.icon, [0, screen_height - 32])
 
-    # Draw menus
-    for menu in menus:
-        menu.draw(screen)
+        # Draw menus
+        for menu in menus:
+            menu.draw(screen)
 
-    # Flip the display
-    pygame.display.flip()
+        # Flip the display
+        pygame.display.flip()
+    except Exception as ex:
+        s = traceback.format_exc()
+        for i in s.split('\n'):
+            t = Text(text=i, font='error', fg=(255, 0, 0))
+            t.draw(surface=screen, x=0, y=traceback.format_exc().split('\n').index(i) * t.text_object.get_size()[1])
+            console.error(i)
+        pygame.display.flip()
+        while True:
+            continue

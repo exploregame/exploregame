@@ -5,6 +5,18 @@
       "file": "visitor1.ttf",
       "size": "20",
       "default": true
+    },
+    {
+      "name": "default_small",
+      "file": "visitor1.ttf",
+      "size": "14",
+      "default": false
+    },
+    {
+      "name": "error",
+      "file": "Roboto-Bold.ttf",
+      "size": "20",
+      "default": false
     }
   ]
 }

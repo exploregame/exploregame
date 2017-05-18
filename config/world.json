@@ -6,7 +6,7 @@
     "generator": {
       "freq": 16,
       "octaves": 1,
-      "z-multiplier": 8
+      "z-multiplier": 16
     }
   }
 }

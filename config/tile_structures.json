@@ -10,7 +10,8 @@
       "allowed_tiles": [
         "grass",
         "dirt",
-        "sand"
+        "sand",
+        "stone"
       ],
       "tile": {
         "name": "stairwell",

@@ -47,3 +47,10 @@
 * Changed from 2D maps to 3D maps
 * Fixes to do with the 2D to 3D transition
 * Changed version system for pre-releases from `X.X.X.alpha-X` to `X.X.X-alpha.X`
+* Added error handling
+* Added `default_small` font
+* Added `error` font
+* Added `Roboto-Bold.ttf`
+* Changed window size from `512x512` to `786x786`
+* Added `stone`
+* Added `stone_brick_walls`

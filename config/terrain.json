@@ -1,9 +1,12 @@
 {
   "terrain": [
-    {"name": "deep_water", "min": 0, "max": 50, "x": 28, "y": 19, "tangible": true},
-    {"name": "water", "min": 51, "max": 100, "x": 37, "y": 19, "tangible": true},
-    {"name": "sand", "min": 101, "max": 125, "x": 14, "y": 13, "tangible": false},
-    {"name": "dirt", "min": 126, "max": 150, "x": 60, "y": 12, "tangible": false},
-    {"name": "grass", "min": 151, "max": 250, "x": 60, "y": 14, "tangible": false}
+    {"name": "deep_water", "min": 0, "max": 50, "minz": 7, "maxz": 7, "x": 28, "y": 19, "tangible": true},
+    {"name": "water", "min": 51, "max": 100, "minz": 7, "maxz": 7, "x": 37, "y": 19, "tangible": true},
+    {"name": "sand", "min": 101, "max": 125, "minz": 7, "maxz": 7, "x": 14, "y": 13, "tangible": false},
+    {"name": "dirt", "min": 126, "max": 150, "minz": 7, "maxz": 7, "x": 60, "y": 12, "tangible": false},
+    {"name": "grass", "min": 151, "max": 250, "minz": 7, "maxz": 7, "x": 60, "y": 14, "tangible": false},
+
+    {"name": "stone_brick_wall", "min": 0, "max": 125, "minz": 0, "maxz": 6, "x": 41, "y": 12, "tangible": true},
+    {"name": "stone", "min": 126, "max": 250, "minz": 0, "maxz": 6, "x": 40, "y": 18, "tangible": false}
   ]
 }
